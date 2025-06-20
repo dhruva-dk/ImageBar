@@ -27,7 +27,7 @@ struct ImageConverterApp: App {
                     .buttonStyle(.plain)
                     .padding(6)
                 }
-                .frame(width: 300, height: 180)
+                .frame(width: 300, height: 400)
         }
             .menuBarExtraStyle(.window)
         }

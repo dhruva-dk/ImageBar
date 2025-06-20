@@ -34,6 +34,10 @@ struct ContentView: View {
             .bold()
         }
         .padding()
+        .onDrop(of: ["public.heic", "public.jpeg", "public.png"], isTargeted: nil) { providers in
+            // Accept the drop, but do nothing with the files yet
+            return true
+        }
     }
 }
 
