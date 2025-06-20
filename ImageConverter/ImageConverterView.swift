@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ContentView: View {
+struct ImageConverterView: View {
     @State private var sliderValue: Int = 50
     @State private var outputFormat = 0
 
@@ -8,7 +8,7 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 12) {
             // Section for Output Size
             VStack(alignment: .leading, spacing: 4) {
-                Text("Output Size")
+                Text("Maximum Output Dimension")
                     .font(.headline)
                 HStack {
                     TextField("50", value: $sliderValue, format: .number)
@@ -17,7 +17,7 @@ struct ContentView: View {
                     Slider(value: Binding(
                         get: { Double(sliderValue) },
                         set: { sliderValue = Int($0) }
-                    ), in: 0...100)
+                    ), in: 0...4096)
                 }
             }
 
@@ -56,5 +56,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ImageConverterView()
 }

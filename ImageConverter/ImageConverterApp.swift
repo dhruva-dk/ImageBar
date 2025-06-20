@@ -15,7 +15,7 @@ struct ImageConverterApp: App {
             "Image Converter",
             systemImage: "photo.on.rectangle"
         ) {
-            ContentView()
+            ImageConverterView()
 
         }
         .menuBarExtraStyle(.window)
