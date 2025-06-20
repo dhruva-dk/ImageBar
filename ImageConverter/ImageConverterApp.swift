@@ -13,7 +13,7 @@ struct ImageConverterApp: App {
     var body: some Scene {
         MenuBarExtra(
             "Menu Bar Example",
-            systemImage: "characters.uppercase"
+            systemImage: "photo.on.rectangle"
         ) {
             ContentView()
                 .overlay(alignment: .topTrailing) {
