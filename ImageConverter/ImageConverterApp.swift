@@ -9,9 +9,26 @@ import SwiftUI
 
 @main
 struct ImageConverterApp: App {
+    
     var body: some Scene {
-        WindowGroup {
+        MenuBarExtra(
+            "Menu Bar Example",
+            systemImage: "characters.uppercase"
+        ) {
             ContentView()
+                .overlay(alignment: .topTrailing) {
+                    Button(
+                        "Quit",
+                        systemImage: "xmark.circle.fill"
+                    ) {
+                        NSApp.terminate(nil)
+                    }
+                    .labelStyle(.iconOnly)
+                    .buttonStyle(.plain)
+                    .padding(6)
+                }
+                .frame(width: 300, height: 180)
         }
-    }
+            .menuBarExtraStyle(.window)
+        }
 }
