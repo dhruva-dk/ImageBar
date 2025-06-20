@@ -16,17 +16,6 @@ struct ImageConverterApp: App {
             systemImage: "photo.on.rectangle"
         ) {
             ContentView()
-                .overlay(alignment: .topTrailing) {
-                    Button(
-                        "Quit",
-                        systemImage: "xmark.circle.fill"
-                    ) {
-                        NSApp.terminate(nil)
-                    }
-                    .labelStyle(.iconOnly)
-                    .buttonStyle(.plain)
-                    .padding(6)
-                }
 
         }
         .menuBarExtraStyle(.window)
