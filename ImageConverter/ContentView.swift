@@ -52,7 +52,6 @@ struct ContentView: View {
 
         }
         .padding()
-        .frame(width: 280) // A typical width for menu bar extras
     }
 }
 
