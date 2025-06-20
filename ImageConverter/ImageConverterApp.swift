@@ -12,7 +12,7 @@ struct ImageConverterApp: App {
     
     var body: some Scene {
         MenuBarExtra(
-            "Menu Bar Example",
+            "Image Converter",
             systemImage: "photo.on.rectangle"
         ) {
             ContentView()
