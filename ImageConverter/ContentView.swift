@@ -1,43 +1,23 @@
-//
-//  ContentView.swift
-//  ImageConverter
-//
-//  Created by Dhruva Kumar on 6/20/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
-    @State private var textInput: String = ""
-    
+    @State private var sliderValue: Int = 50
+
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Add your text below:")
-                .foregroundStyle(.secondary)
-            TextEditor(text: $textInput)
-                .padding(.vertical, 4)
-                .scrollContentBackground(.hidden)
-                .background(.thinMaterial)
-            Button(
-                "Copy uppercased result",
-                systemImage: "square.on.square"
-            ) {
-                let pasteboard = NSPasteboard.general
-                pasteboard.clearContents()
-                pasteboard.setString(
-                    textInput.uppercased(),
-                    forType: .string
-                )
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Output Size")
+            HStack {
+                TextField("50", value: $sliderValue, format: .number)
+                    .textFieldStyle(.roundedBorder)
+                    .frame(width: 60)
+                Slider(value: Binding(
+                    get: { Double(sliderValue) },
+                    set: { sliderValue = Int($0) }
+                ), in: 0...100)
             }
-            .buttonStyle(.plain)
-            .foregroundStyle(.blue)
-            .bold()
+            Divider()
         }
         .padding()
-        .onDrop(of: ["public.heic", "public.jpeg", "public.png"], isTargeted: nil) { providers in
-            // Accept the drop, but do nothing with the files yet
-            return true
-        }
     }
 }
 
