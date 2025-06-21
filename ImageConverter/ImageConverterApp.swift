@@ -13,7 +13,7 @@ struct ImageConverterApp: App {
             AppMenu()
                 .environmentObject(appViewModel)
                 .introspectMenuBarExtraWindow { window in // <-- the magic ✨
-
+                    
                 }
 
         }
@@ -25,7 +25,7 @@ struct ImageConverterApp: App {
 
 
                         if let button = statusItem.button {
-                            let dragView = DraggableView(frame: button.bounds)
+                            let dragView = DraggableView(frame: button.bounds, viewModel: appViewModel)
                             button.addSubview(dragView)
                             
                             // Use Auto Layout to make our DraggableView cover the entire button.
@@ -46,14 +46,19 @@ struct ImageConverterApp: App {
 
 // from https://github.com/localsend/localsend/issues/1615
 class DraggableView: NSView {
-    override init(frame frameRect: NSRect) {
+    
+    private let appViewModel: AppViewModel
+    
+    init(frame frameRect: NSRect, viewModel: AppViewModel) {
+        self.appViewModel = viewModel
         super.init(frame: frameRect)
         setup()
     }
     
+    
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setup()
+        fatalError("init(coder:) has not been implemented")
+        
     }
     
     private func setup() {
@@ -66,21 +71,30 @@ class DraggableView: NSView {
     
     override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
         let pasteboard = sender.draggingPasteboard
-        
         if let urls = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL] {
-            for url in urls {
-                print(url.path)
-            }
+            appViewModel.process(files: urls)
             return true
         }
-        
-        if let strings = pasteboard.readObjects(forClasses: [NSString.self], options: nil) as? [String] {
-            for string in strings {
-                print(string)
-            }
-            return true
-        }
-        
         return false
+        
+        
+        /**
+         
+         
+         
+         
+         if let strings = pasteboard.readObjects(forClasses: [NSString.self], options: nil) as? [String] {
+             for string in strings {
+                 print(string)
+             }
+             return true
+         }
+         
+         return false
+    
+         
+         
+         
+         */
     }
 }
