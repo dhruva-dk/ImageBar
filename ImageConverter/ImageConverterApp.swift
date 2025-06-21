@@ -18,7 +18,7 @@ struct ImageConverterApp: App {
             systemImage: "photo.on.rectangle"
         ) {
             
-            ImageConverterView()
+            AppMenu()
                 
             
 

@@ -1,13 +1,15 @@
 import SwiftUI
 
-struct ImageConverterView: View {
+struct AppMenu: View {
 
     @State private var importing = false
 
     var body: some View {
         
-        //File picker button
-        // Section for File Selection
+        
+        
+        // MARK: File Selection Button
+        
         Button( "Select Images") {
             self.importing = true
         }
@@ -29,9 +31,13 @@ struct ImageConverterView: View {
         }
         
         
+        
+        // MARK: Settings & Quit Buttons
+        
         Button("Settings") {
             
         }
+        
         Divider()
         Button("Quit") {
             NSApplication.shared.terminate(nil)
@@ -42,5 +48,5 @@ struct ImageConverterView: View {
 }
 
 #Preview {
-    ImageConverterView()
+    AppMenu()
 }
