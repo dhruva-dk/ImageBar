@@ -92,7 +92,7 @@ struct StatusFooterView: View {
         .font(.footnote) // Use .footnote instead of .caption for better readability
         .foregroundColor(.secondary)
         .frame(height: 38) // Give it a slightly taller, more stable height
-        .animation(.easeInOut(duration: 0.1), value: status)
+        .animation(.easeInOut(duration: 0.15), value: status)
     }
 }
 

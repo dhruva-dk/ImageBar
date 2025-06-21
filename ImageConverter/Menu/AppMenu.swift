@@ -7,9 +7,8 @@ struct AppMenu: View {
     // In AppMenu.swift
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 16) {
             
-
 
 
                 
@@ -23,10 +22,10 @@ struct AppMenu: View {
                 .pickerStyle(.menu)
                 .disabled(appViewModel.status == .processing) // Disable during processing
                 
-                Divider()
+
                 
                 
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 8) {
                     Text("Quality (JPEG & HEIC Only):")
                     
                     HStack {
@@ -45,11 +44,11 @@ struct AppMenu: View {
 
 
             
-            Divider()
+
             
             
             // --- Dimension Controls ---
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text("Maximum Output Dimension:")
                 HStack {
                     TextField("", value: $appViewModel.outputSize, format: .number)
@@ -65,7 +64,7 @@ struct AppMenu: View {
 
 
 
-            Divider()
+ 
 
             // --- Status Footer ---
             StatusFooterView(status: appViewModel.status) {
