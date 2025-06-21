@@ -32,6 +32,8 @@ class DraggableView: NSView {
         return .copy
     }
     
+    // MARK: - Custom Dragging Operation (convert files with viewModel)
+    
     override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
         let pasteboard = sender.draggingPasteboard
         if let urls = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL] {
@@ -40,24 +42,6 @@ class DraggableView: NSView {
         }
         return false
         
-        
-        /**
-         
-         
-         
-         
-         if let strings = pasteboard.readObjects(forClasses: [NSString.self], options: nil) as? [String] {
-             for string in strings {
-                 print(string)
-             }
-             return true
-         }
-         
-         return false
-    
-         
-         
-         
-         */
+   
     }
 }
