@@ -1,6 +1,8 @@
 // ImageConverter.swift
+
 import Foundation
-import AppKit
+import ImageIO // <-- Use the Image I/O framework
+import AppKit // For NSImage, though it's used less
 
 struct ImageConverter {
     static func convert(
@@ -9,40 +11,41 @@ struct ImageConverter {
         format: ImageFormat
     ) throws -> Data {
         
-        let filename = file.lastPathComponent
-        
-        guard let nsImage = NSImage(contentsOf: file) else {
-            throw ImageConversionError.invalidImageFile(filename)
+        // 1. Create an Image Source from the file URL.
+        // This is memory-efficient as it doesn't load the whole image yet.
+        guard let imageSource = CGImageSourceCreateWithURL(file as CFURL, nil) else {
+            throw ImageConversionError.invalidImageFile(file.lastPathComponent)
         }
         
-        guard let imageRep = nsImage.representations.first as? NSBitmapImageRep else {
-            throw ImageConversionError.invalidImageFile(filename)
-        }
-        let originalPixelSize = NSSize(width: imageRep.pixelsWide, height: imageRep.pixelsHigh)
+        // 2. Define the resizing options in a dictionary.
+        let options: [CFString: Any] = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceThumbnailMaxPixelSize: maxDimension
+        ]
         
-        let newPixelSize = calculateNewSize(for: originalPixelSize, maxDimension: maxDimension)
-        
-        let resizedImage = try nsImage.resized(toPixels: newPixelSize)
-        
-        let outputData = try resizedImage.data(for: format)
-        
-        return outputData
-    }
-    
-    private static func calculateNewSize(for originalSize: NSSize, maxDimension: Int) -> NSSize {
-        let max = CGFloat(maxDimension)
-        if originalSize.width <= max && originalSize.height <= max {
-            return originalSize
+        // 3. Create a resized thumbnail. Image I/O handles the resizing internally and efficiently.
+        guard let resizedImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options as CFDictionary) else {
+            throw ImageConversionError.resizeFailed(file.lastPathComponent)
         }
         
-        if originalSize.width > originalSize.height {
-            let newWidth = max
-            let newHeight = (originalSize.height / originalSize.width) * newWidth
-            return NSSize(width: newWidth, height: newHeight)
-        } else {
-            let newHeight = max
-            let newWidth = (originalSize.width / originalSize.height) * newHeight
-            return NSSize(width: newWidth, height: newHeight)
+        // 4. Prepare to write the output data.
+        let outputData = NSMutableData()
+        guard let imageDestination = CGImageDestinationCreateWithData(outputData, format.uti, 1, nil) else {
+            throw ImageConversionError.dataRepresentationFailed(file.lastPathComponent)
         }
+        
+        // 5. Add the resized image to the destination, providing format-specific properties.
+        CGImageDestinationAddImage(imageDestination, resizedImage, format.properties as CFDictionary)
+        
+        // 6. Finalize the conversion and write the data.
+        guard CGImageDestinationFinalize(imageDestination) else {
+            throw ImageConversionError.dataRepresentationFailed(file.lastPathComponent)
+        }
+        
+        return outputData as Data
     }
 }
+
+// You can now delete your NSImage+Extensions.swift file as this
+// new implementation no longer uses those methods.
