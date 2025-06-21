@@ -4,52 +4,21 @@ struct AppMenu: View {
     @Environment(\.openSettings) private var openSettings
     @EnvironmentObject var settings: SettingsStore
     
-    // --- STATE MANAGEMENT ---
-    // These variables will drive the UI changes
-    
     @State private var isImporting = false
     @State private var isProcessing = false
-    @State private var processingMessage = ""
     
-    // For showing an alert when an error occurs
     @State private var isShowingErrorAlert = false
     @State private var errorMessage = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            
-            // --- DYNAMIC VIEW ---
-            // The view will change based on the 'isProcessing' state
-            
-            if isProcessing {
-                // Show a progress message while working
-                Text(processingMessage)
-                    .padding(.horizontal)
-            } else {
-                // Show the "Select Images" button when idle
-                Button("Select Images") {
-                    self.isImporting = true
-                }
-                .fileImporter(
-                    isPresented: $isImporting,
-                    allowedContentTypes: [.image],
-                    allowsMultipleSelection: true
-                ) { result in
-                    // When the file importer closes, this code runs
-                    switch result {
-                    case .success(let files):
-                        // If user selected files, start the main process
-                        process(files: files)
-                    case .failure(let error):
-                        // If there was an error selecting files, show it
-                        showError(message: error.localizedDescription)
-                    }
-                }
+            Button("Select Images to Convert...") {
+                print("UI: 'Select Images' button clicked.")
+                self.isImporting = true
             }
+            .disabled(isProcessing)
             
             Divider()
-            
-            // --- STANDARD BUTTONS ---
             
             Button("Settings...") {
                 openSettings()
@@ -60,85 +29,94 @@ struct AppMenu: View {
             }
         }
         .padding(10)
-        // This modifier presents an alert when isShowingErrorAlert becomes true
+        .fileImporter(
+            isPresented: $isImporting,
+            allowedContentTypes: [.image],
+            allowsMultipleSelection: true
+        ) { result in
+            print("UI: fileImporter completed.")
+            if case .success(let files) = result {
+                print("UI: fileImporter success. Received \(files.count) file(s).")
+                process(files: files)
+            } else if case .failure(let error) = result {
+                print("UI: fileImporter failed with error: \(error.localizedDescription)")
+                showError(message: error.localizedDescription)
+            }
+        }
         .alert("An Error Occurred", isPresented: $isShowingErrorAlert) {
-            Button("OK") { } // A simple dismiss button
+            Button("OK") { }
         } message: {
             Text(errorMessage)
         }
     }
     
-    // --- HELPER FUNCTIONS ---
-    
-    /// Sets the error message and triggers the alert to be shown.
     private func showError(message: String) {
         self.errorMessage = message
         self.isShowingErrorAlert = true
     }
     
-    /// The main function to orchestrate the entire conversion workflow.
     private func process(files: [URL]) {
-        // 1. Ask the user for a folder to save the converted images
+        print("PROCESS: Starting process function with \(files.count) file(s).")
+        
+        self.isProcessing = true
+        
         let panel = NSOpenPanel()
         panel.title = "Select Output Folder"
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.canCreateDirectories = true
+        print("PROCESS: Showing NSOpenPanel to select output directory.")
         
-        // Show the panel. If the user clicks "OK"...
-        if panel.runModal() == .OK, let outputDirectory = panel.url {
+        guard panel.runModal() == .OK, let outputDirectory = panel.url else {
+            print("PROCESS: User cancelled the output panel.")
+            self.isProcessing = false
+            return
+        }
+        print("PROCESS: User selected output directory: \(outputDirectory.path)")
+        
+        for file in files {
+            print("\nPROCESS: --- Starting loop for file: \(file.lastPathComponent) ---")
             
-            // 2. Set the UI to its "processing" state
-            isProcessing = true
+            print("PROCESS: Attempting to start security-scoped access...")
+            let didStartAccessing = file.startAccessingSecurityScopedResource()
+            print("PROCESS: startAccessingSecurityScopedResource() returned: \(didStartAccessing)")
             
-            // 3. Run the conversion on a background thread to keep the app responsive
-            DispatchQueue.global(qos: .userInitiated).async {
-                let totalFiles = files.count
-                for (index, file) in files.enumerated() {
-                    
-                    // Update the progress message on the main thread
-                    DispatchQueue.main.async {
-                        processingMessage = "Converting file \(index + 1) of \(totalFiles)..."
-                    }
-                    
-                    do {
-                        // A. Call the conversion engine
-                        let format: ImageFormat = (settings.outputFormat == 0) ? .jpeg(quality: 0.85) : .png
-                        let outputData = try ImageConverter.convert(
-                            file: file,
-                            maxDimension: settings.outputSize,
-                            format: format
-                        )
-                        
-                        // B. Create a new filename and save the data
-                        let originalFilename = file.deletingPathExtension().lastPathComponent
-                        let newFilename = "\(originalFilename)-converted.\(format.fileExtension)"
-                        let outputURL = outputDirectory.appendingPathComponent(newFilename)
-                        
-                        try outputData.write(to: outputURL)
-                        
-                    } catch {
-                        // C. If any error occurs, show it and stop processing
-                        DispatchQueue.main.async {
-                            showError(message: error.localizedDescription)
-                            isProcessing = false // Reset UI state
-                        }
-                        return // Exit the background task
-                    }
-                }
-                
-                // 4. Once the loop is finished, reset the UI on the main thread
-                DispatchQueue.main.async {
-                    isProcessing = false
-                    // Optional: You could show a "Done!" alert here
+            defer {
+                if didStartAccessing {
+                    file.stopAccessingSecurityScopedResource()
+                    print("PROCESS: --- In defer block, stopped security access for \(file.lastPathComponent) ---")
                 }
             }
+            
+            do {
+                let format: ImageFormat = (settings.outputFormat == 0) ? .jpeg(quality: 0.85) : .png
+                print("PROCESS: Calling ImageConverter with format: \(format) and size: \(settings.outputSize)")
+                
+                let outputData = try ImageConverter.convert(
+                    file: file,
+                    maxDimension: settings.outputSize,
+                    format: format
+                )
+                print("PROCESS: Successfully converted data, size: \(outputData.count) bytes.")
+                
+                let originalFilename = file.deletingPathExtension().lastPathComponent
+                let newFilename = "\(originalFilename)-converted.\(format.fileExtension)"
+                let outputURL = outputDirectory.appendingPathComponent(newFilename)
+                
+                print("PROCESS: Attempting to write data to: \(outputURL.path)")
+                try outputData.write(to: outputURL)
+                print("PROCESS: Successfully wrote file.")
+                
+            } catch {
+                print("PROCESS: 🔴 ERROR CAUGHT IN PROCESS FUNCTION: \(error)")
+                print("PROCESS: 🔴 Error's Localized Description: \(error.localizedDescription)")
+                showError(message: error.localizedDescription)
+                self.isProcessing = false
+                return
+            }
         }
+        
+        print("\nPROCESS: Finished loop successfully.")
+        self.isProcessing = false
     }
-}
-
-
-#Preview {
-    AppMenu()
-        .environmentObject(SettingsStore())
 }
