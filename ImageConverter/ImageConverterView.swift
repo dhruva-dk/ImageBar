@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ImageConverterView: View {
-    @State private var sliderValue: Int = 800
+    @State private var sliderValue: Int = 1200
     @State private var outputFormat = 0
     
     @State private var importing = false
