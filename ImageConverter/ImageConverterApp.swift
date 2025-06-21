@@ -20,8 +20,10 @@ struct ImageConverterApp: App {
             
             AppMenu()
                 
-            
-
+        }
+        
+        Settings {
+            SettingsView()
         }
     }
 }

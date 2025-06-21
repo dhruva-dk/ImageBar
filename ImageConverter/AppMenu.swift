@@ -35,7 +35,7 @@ struct AppMenu: View {
         // MARK: Settings & Quit Buttons
         
         Button("Settings") {
-            
+            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
         }
         
         Divider()
