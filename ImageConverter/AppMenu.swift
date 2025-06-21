@@ -5,8 +5,9 @@ struct AppMenu: View {
     @EnvironmentObject var appViewModel: AppViewModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            // Main controls, always visible
+        VStack(alignment: .leading, spacing: 12) { // Slightly increased spacing
+            
+            // --- Main Controls ---
             VStack(alignment: .leading, spacing: 4) {
                 Text("Maximum Output Dimension:")
                 HStack {
@@ -26,48 +27,18 @@ struct AppMenu: View {
                 Text("PNG").tag(1)
             }
             .pickerStyle(.menu)
-            .font(.system(size: 13))
             .disabled(appViewModel.status == .processing)
 
-            Divider()
 
-            // Status indicator at bottom, always present
-            if case .processing = appViewModel.status {
-                HStack(spacing: 8) {
-                    ProgressView().scaleEffect(0.5)
-                    Text("Processing...")
-                        .foregroundColor(.secondary)
-                    Spacer()
-                }
-            } else if case .failure(let message) = appViewModel.status {
-                HStack(spacing: 8) {
-                    Image(systemName: "exclamationmark.triangle")
-                        .foregroundColor(.red)
-                    Text(message)
-                        .foregroundColor(.red)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Spacer()
-                    Button(action: {
-                        appViewModel.status = .idle
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.secondary)
-                    }
-                    .buttonStyle(.plain)
-                    .help("Dismiss error")
-                }
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.red.opacity(0.07))
-                )
-            } else if case .idle = appViewModel.status {
-                HStack(spacing: 8) {
-                    Text("Drag images into the menu bar icon to convert.")
-                        .foregroundColor(.secondary)
-                }
+            // --- Status Footer ---
+            // The entire if/else if chain is replaced by this one clean, composed view.
+            StatusFooterView(status: appViewModel.status) {
+                // This closure defines what happens when the dismiss action is triggered.
+                appViewModel.status = .idle
             }
         }
         .font(.system(size: 13))
-        .padding(15)
+        .padding(12)
+        .frame(width: 320)
     }
 }
