@@ -35,13 +35,15 @@ struct AppMenu: View {
         
         
         
+        Divider()
+        
         // MARK: Settings & Quit Buttons
         
         Button("Settings") {
             openSettings()
         }
         
-        Divider()
+
         Button("Quit") {
             NSApplication.shared.terminate(nil)
         }

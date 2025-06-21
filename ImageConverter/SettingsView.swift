@@ -5,28 +5,30 @@
 //  Created by Dhruva Kumar on 6/20/25.
 //
 
+// SettingsView.swift
+
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var sliderValue: Int = 1200
-    @State private var outputFormat = 0
+    // Connect to the shared store
+    @EnvironmentObject var settings: SettingsStore
 
     var body: some View {
         Form {
             LabeledContent("Max Dimensions:") {
                 VStack(alignment: .leading, spacing: 4) {
-                    TextField("", value: $sliderValue, format: .number)
+                    TextField("", value: $settings.outputSize, format: .number)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 70)
 
                     Slider(value: Binding(
-                        get: { Double(sliderValue) },
-                        set: { sliderValue = Int($0) }
-                    ), in: 0...4096)
+                        get: { Double(settings.outputSize) },
+                        set: { settings.outputSize = Int($0) }
+                    ), in: 100...4096)
                 }
             }
 
-            Picker("Output Format:", selection: $outputFormat) {
+            Picker("Output Format:", selection: $settings.outputFormat) {
                 Text("JPEG").tag(0)
                 Text("PNG").tag(1)
             }
@@ -39,4 +41,5 @@ struct SettingsView: View {
 
 #Preview {
     SettingsView()
+        .environmentObject(SettingsStore())
 }
