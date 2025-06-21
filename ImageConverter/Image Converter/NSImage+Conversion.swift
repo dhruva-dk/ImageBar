@@ -3,7 +3,6 @@ import AppKit
 
 extension NSImage {
     func resized(toPixels newPixelSize: NSSize) throws -> NSImage {
-        // ... implementation from your original file
         guard let rep = NSBitmapImageRep(
             bitmapDataPlanes: nil,
             pixelsWide: Int(newPixelSize.width),

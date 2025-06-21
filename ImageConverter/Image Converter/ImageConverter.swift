@@ -30,7 +30,6 @@ struct ImageConverter {
     }
     
     private static func calculateNewSize(for originalSize: NSSize, maxDimension: Int) -> NSSize {
-        // ... implementation from your original file
         let max = CGFloat(maxDimension)
         if originalSize.width <= max && originalSize.height <= max {
             return originalSize
