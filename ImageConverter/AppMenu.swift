@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AppMenu: View {
     @Environment(\.openSettings) private var openSettings
-    @EnvironmentObject var settings: SettingsStore
+    @EnvironmentObject var settings: SettingsViewModel
 
     
     @State private var isImporting = false

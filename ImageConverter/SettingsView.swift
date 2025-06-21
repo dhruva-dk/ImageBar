@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var settings: SettingsStore
+    @EnvironmentObject var settings: SettingsViewModel
 
     var body: some View {
         Form {

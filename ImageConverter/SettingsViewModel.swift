@@ -1,6 +1,6 @@
 import SwiftUI
 
-class SettingsStore: ObservableObject {
+class SettingsViewModel: ObservableObject {
     @Published var outputFormat: Int {
         didSet {
             UserDefaults.standard.set(outputFormat, forKey: "outputFormat")
