@@ -40,7 +40,7 @@ struct ImageConverterView: View {
 
             // Section for File Selection
             Button(action: {
-                importing.toggle()
+                self.importing = true
             }) {
                 HStack {
                     Image(systemName: "photo.on.rectangle")
@@ -51,12 +51,7 @@ struct ImageConverterView: View {
             .buttonStyle(.bordered)
             .controlSize(.large)
             .fileImporter(
-                isPresented: Binding(
-                    get: { importing },
-                    set: { newValue in
-                        importing = newValue
-                    }
-                ),
+                isPresented: $importing,
                 allowedContentTypes: [.image],
                 allowsMultipleSelection: true
             ) { result in
