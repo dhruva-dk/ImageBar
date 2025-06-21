@@ -11,39 +11,41 @@ struct AppMenu: View {
             
 
 
-            // --- Format & Quality Controls ---
-            // We'll group the format picker and its dependent quality slider together.
-            VStack(alignment: .leading, spacing: 8) {
+
                 
                 
                 Picker("Output Format:", selection: $appViewModel.outputFormat) {
                     Text("JPEG").tag(0)
                     Text("PNG").tag(1)
+                    Text("HEIC").tag(2)
+                    Text("TIFF").tag(3)
                 }
                 .pickerStyle(.menu)
-
-                // --- NEW: JPEG Quality Controls, mirroring the dimension controls ---
+                .disabled(appViewModel.status == .processing) // Disable during processing
+                
+                Divider()
+                
+                
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("JPEG Quality:")
-                        .foregroundColor(appViewModel.outputFormat != 0 ? .secondary.opacity(0.5) : .primary) // Also fade the text when disabled
+                    Text("Quality (JPEG & HEIC Only):")
+                        .foregroundColor(appViewModel.outputFormat != 0 ? .secondary.opacity(0.5) : .primary)
                     
                     HStack {
-                        // This TextField is bound to the quality, displayed as a percentage (0-100).
-                        // We use a custom Binding to convert the Double (0.0-1.0) to an Int for the text field.
+
                         TextField("", value: Binding(
-                            get: { Int(appViewModel.jpegQuality * 100) },
-                            set: { appViewModel.jpegQuality = Double($0) / 100.0 }
+                            get: { Int(appViewModel.quality * 100) },
+                            set: { appViewModel.quality = Double($0) / 100.0 }
                         ), format: .number)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 60)
                         
-                        Slider(value: $appViewModel.jpegQuality, in: 0.1...1.0)
+                        Slider(value: $appViewModel.quality, in: 0.1...1.0)
                     }
                 }
-                // THE KEY CHANGE: This entire block is disabled if the selected format is NOT JPEG (tag 0).
-                .disabled(appViewModel.outputFormat != 0)
-            }
-            .disabled(appViewModel.status == .processing)
+
+                .disabled((appViewModel.outputFormat != 0 && appViewModel.outputFormat != 2) || appViewModel.status == .processing) // Disable if not JPEG or HEIC or if processing
+
+
             
             Divider()
             

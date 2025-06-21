@@ -19,11 +19,13 @@ class AppViewModel: ObservableObject {
         }
     }
     
-    @Published var jpegQuality: Double {
+    @Published var quality: Double {
         didSet {
-            UserDefaults.standard.set(jpegQuality, forKey: "jpegQuality")
+            UserDefaults.standard.set(quality, forKey: "quality")
         }
     }
+    
+
 
     // MARK: - State Properties
     
@@ -37,8 +39,8 @@ class AppViewModel: ObservableObject {
         self.outputFormat = UserDefaults.standard.integer(forKey: "outputFormat")
         let savedSize = UserDefaults.standard.integer(forKey: "outputSize")
         self.outputSize = savedSize == 0 ? 1200 : savedSize
-        let savedQuality = UserDefaults.standard.double(forKey: "jpegQuality")
-        self.jpegQuality = (savedQuality == 0) ? 0.85 : savedQuality // Default to 85% quality
+        let savedQuality = UserDefaults.standard.double(forKey: "quality")
+        self.quality = (savedQuality == 0) ? 0.85 : savedQuality // Default to 85% quality
     }
     
     // MARK: - Business Logic
@@ -76,7 +78,20 @@ class AppViewModel: ObservableObject {
                         }
                     }
                     
-                    let format: ImageFormat = (self.outputFormat == 0) ? .jpeg(quality: self.jpegQuality) : .png
+                    let format: ImageFormat
+                                        switch self.outputFormat {
+                                        case 0: // JPEG
+                                            format = .jpeg(quality: self.quality)
+                                        case 1: // PNG
+                                            format = .png
+                                        case 2: // HEIC
+                                            format = .heic(quality: self.quality)
+                                        case 3: // TIFF
+                                            format = .tiff
+                                        default:
+                                            // Fallback to PNG if something is wrong
+                                            format = .png
+                                        }
                     let outputData = try ImageConverter.convert(
                         file: file,
                         maxDimension: self.outputSize,

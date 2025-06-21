@@ -1,4 +1,4 @@
-// ImageFormat.swift
+// In ImageFormat.swift
 
 import Foundation
 import ImageIO
@@ -7,33 +7,36 @@ import UniformTypeIdentifiers
 enum ImageFormat {
     case jpeg(quality: Double)
     case png
-    // We'll add .heic, .webp, etc. here later.
+    // --- ADD NEW FORMATS ---
+    case heic(quality: Double)
+    case tiff
     
-    /// The Uniform Type Identifier (UTI) for the format.
     var uti: CFString {
         switch self {
         case .jpeg: return UTType.jpeg.identifier as CFString
         case .png:  return UTType.png.identifier as CFString
+        // --- ADD NEW UTI's ---
+        case .heic: return UTType.heic.identifier as CFString
+        case .tiff: return UTType.tiff.identifier as CFString
         }
     }
     
-    /// A dictionary of properties for the image destination.
     var properties: [CFString: Any] {
         switch self {
-        case .jpeg(let quality):
-            // kCGImageDestinationLossyCompressionQuality is the key for JPEG quality.
+        case .jpeg(let quality), .heic(let quality): // HEIC uses the same quality key
             return [kCGImageDestinationLossyCompressionQuality: quality]
-        case .png:
-            return [:] // PNG has no special properties here.
+        case .png, .tiff:
+            return [:] // Use default settings for PNG and TIFF
         }
     }
     
-    /// The file extension remains the same.
     var fileExtension: String {
         switch self {
         case .jpeg: "jpg"
         case .png: "png"
+        // --- ADD NEW EXTENSIONS ---
+        case .heic: "heic"
+        case .tiff: "tiff"
         }
     }
 }
-
