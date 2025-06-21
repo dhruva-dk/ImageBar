@@ -3,16 +3,12 @@ import SwiftUI
 struct AppMenu: View {
     @Environment(\.openSettings) private var openSettings
     @EnvironmentObject var appViewModel: AppViewModel
-    
-    // The 'isShowingErrorAlert' computed property is now removed as it's no longer needed.
-    
+
     var body: some View {
-        // The view remains a simple VStack for now.
         VStack(alignment: .leading, spacing: 10) {
-            
-            // Section for Output Size
+            // Main controls, always visible
             VStack(alignment: .leading, spacing: 4) {
-                Text("Maximum Output Dimension")
+                Text("Maximum Output Dimension:")
                 HStack {
                     TextField("", value: $appViewModel.outputSize, format: .number)
                         .textFieldStyle(.roundedBorder)
@@ -23,35 +19,55 @@ struct AppMenu: View {
                     ), in: 16...4096)
                 }
             }
-            // 1. The controls are disabled based on the new status enum.
             .disabled(appViewModel.status == .processing)
-
-            Divider()
 
             Picker("Output Format:", selection: $appViewModel.outputFormat) {
                 Text("JPEG").tag(0)
                 Text("PNG").tag(1)
             }
             .pickerStyle(.menu)
-            // 2. This disabled modifier is also updated.
+            .font(.system(size: 13))
             .disabled(appViewModel.status == .processing)
-            
-            // 3. A ProgressView is shown when the status is 'processing'.
-            if appViewModel.status == .processing {
-                
-                Divider()
-                
+
+            Divider()
+
+            // Status indicator at bottom, always present
+            if case .processing = appViewModel.status {
                 HStack(spacing: 8) {
-                    ProgressView().scaleEffect(0.7)
+                    ProgressView().scaleEffect(0.5)
                     Text("Processing...")
-                        .font(.caption)
                         .foregroundColor(.secondary)
                     Spacer()
                 }
-                .padding(.top, 4)
+            } else if case .failure(let message) = appViewModel.status {
+                HStack(spacing: 8) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .foregroundColor(.red)
+                    Text(message)
+                        .foregroundColor(.red)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer()
+                    Button(action: {
+                        appViewModel.status = .idle
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                    .help("Dismiss error")
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.red.opacity(0.07))
+                )
+            } else if case .idle = appViewModel.status {
+                HStack(spacing: 8) {
+                    Text("Drag images into the menu bar icon to convert.")
+                        .foregroundColor(.secondary)
+                }
             }
         }
+        .font(.system(size: 13))
         .padding(15)
-
     }
 }
