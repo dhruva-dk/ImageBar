@@ -2,26 +2,12 @@ import SwiftUI
 
 struct AppMenu: View {
     @Environment(\.openSettings) private var openSettings
-    
-    // The view now depends on the AppViewModel.
     @EnvironmentObject var appViewModel: AppViewModel
-
-    // This state is purely for the view's fileImporter presentation. It's fine to keep it here.
-    @State private var isImporting = false
     
-    // We create a computed binding to determine if the alert should be shown.
-    // This is a clean way to bridge the ViewModel's optional error string to the alert's isPresented boolean.
-    private var isShowingErrorAlert: Binding<Bool> {
-        Binding(
-            get: { appViewModel.errorMessage != nil },
-            set: { _ in
-                // When the alert is dismissed, we clear the error message in the ViewModel.
-                appViewModel.errorMessage = nil
-            }
-        )
-    }
+    // The 'isShowingErrorAlert' computed property is now removed as it's no longer needed.
     
     var body: some View {
+        // The view remains a simple VStack for now.
         VStack(alignment: .leading, spacing: 10) {
             
             // Section for Output Size
@@ -37,9 +23,8 @@ struct AppMenu: View {
                     ), in: 100...4096)
                 }
             }
-            // 1. We add the disabled modifier here. It will disable both the
-            //    TextField and the Slider since they are inside this VStack.
-            .disabled(appViewModel.isProcessing)
+            // 1. The controls are disabled based on the new status enum.
+            .disabled(appViewModel.status == .processing)
 
             Divider()
 
@@ -48,19 +33,25 @@ struct AppMenu: View {
                 Text("PNG").tag(1)
             }
             .pickerStyle(.menu)
-            // 2. We also disable the picker.
-            .disabled(appViewModel.isProcessing)
+            // 2. This disabled modifier is also updated.
+            .disabled(appViewModel.status == .processing)
             
-        }
-        .padding(10)
-        .alert(
-            "An Error Occurred",
-            isPresented: isShowingErrorAlert, // Use our computed binding
-            actions: { Button("OK") {} },
-            message: {
-                // The message text comes directly from the ViewModel.
-                Text(appViewModel.errorMessage ?? "An unknown error occurred.")
+            // 3. A ProgressView is shown when the status is 'processing'.
+            if appViewModel.status == .processing {
+                
+                Divider()
+                
+                HStack(spacing: 8) {
+                    ProgressView().scaleEffect(0.7)
+                    Text("Processing...")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Spacer()
+                }
+                .padding(.top, 4)
             }
-        )
+        }
+        .padding(15)
+
     }
 }
