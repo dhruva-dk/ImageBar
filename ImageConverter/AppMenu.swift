@@ -14,13 +14,13 @@ struct AppMenu: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Maximum Output Dimension")
                 HStack {
-                    TextField("50", value: $appViewModel.outputSize, format: .number)
+                    TextField("", value: $appViewModel.outputSize, format: .number)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 60)
                     Slider(value: Binding(
                         get: { Double(appViewModel.outputSize) },
                         set: { appViewModel.outputSize = Int($0) }
-                    ), in: 100...4096)
+                    ), in: 16...4096)
                 }
             }
             // 1. The controls are disabled based on the new status enum.
