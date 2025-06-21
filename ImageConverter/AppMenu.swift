@@ -28,7 +28,6 @@ struct AppMenu: View {
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Quality (JPEG & HEIC Only):")
-                        .foregroundColor(appViewModel.outputFormat != 0 ? .secondary.opacity(0.5) : .primary)
                     
                     HStack {
 
@@ -42,7 +41,6 @@ struct AppMenu: View {
                         Slider(value: $appViewModel.quality, in: 0.1...1.0)
                     }
                 }
-
                 .disabled((appViewModel.outputFormat != 0 && appViewModel.outputFormat != 2) || appViewModel.status == .processing) // Disable if not JPEG or HEIC or if processing
 
 
