@@ -46,23 +46,10 @@ struct AppMenu: View {
             }
             .pickerStyle(.menu)
             
+
+            
         }
         .padding(10)
-        .fileImporter(
-            isPresented: $isImporting,
-            allowedContentTypes: [.image],
-            allowsMultipleSelection: true
-        ) { result in
-            switch result {
-            case .success(let files):
-                // The view simply tells the ViewModel to process the files.
-                // It doesn't know or care how the processing is done.
-                appViewModel.process(files: files)
-            case .failure(let error):
-                // If the file importer itself fails, we can set the error on the ViewModel.
-                appViewModel.errorMessage = error.localizedDescription
-            }
-        }
         .alert(
             "An Error Occurred",
             isPresented: isShowingErrorAlert, // Use our computed binding
