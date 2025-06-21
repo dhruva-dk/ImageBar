@@ -3,6 +3,7 @@ import SwiftUI
 struct AppMenu: View {
     @Environment(\.openSettings) private var openSettings
     @EnvironmentObject var settings: SettingsStore
+    @EnvironmentObject var appController: AppController
     
     @State private var isImporting = false
     @State private var isProcessing = false
@@ -12,8 +13,8 @@ struct AppMenu: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
+            
             Button("Select Images to Convert...") {
-                print("UI: 'Select Images' button clicked.")
                 self.isImporting = true
             }
             .disabled(isProcessing)
@@ -23,6 +24,7 @@ struct AppMenu: View {
             Button("Settings...") {
                 openSettings()
             }
+            .disabled(isProcessing)
             
             Button("Quit") {
                 NSApplication.shared.terminate(nil)
@@ -34,14 +36,14 @@ struct AppMenu: View {
             allowedContentTypes: [.image],
             allowsMultipleSelection: true
         ) { result in
-            print("UI: fileImporter completed.")
             if case .success(let files) = result {
-                print("UI: fileImporter success. Received \(files.count) file(s).")
                 process(files: files)
             } else if case .failure(let error) = result {
-                print("UI: fileImporter failed with error: \(error.localizedDescription)")
                 showError(message: error.localizedDescription)
             }
+        }
+        .onReceive(appController.droppedFilesSubject) { urls in
+            process(files: urls)
         }
         .alert("An Error Occurred", isPresented: $isShowingErrorAlert) {
             Button("OK") { }
@@ -56,7 +58,7 @@ struct AppMenu: View {
     }
     
     private func process(files: [URL]) {
-        print("PROCESS: Starting process function with \(files.count) file(s).")
+        guard !isProcessing else { return }
         
         self.isProcessing = true
         
@@ -65,58 +67,46 @@ struct AppMenu: View {
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.canCreateDirectories = true
-        print("PROCESS: Showing NSOpenPanel to select output directory.")
         
         guard panel.runModal() == .OK, let outputDirectory = panel.url else {
-            print("PROCESS: User cancelled the output panel.")
             self.isProcessing = false
             return
         }
-        print("PROCESS: User selected output directory: \(outputDirectory.path)")
         
-        for file in files {
-            print("\nPROCESS: --- Starting loop for file: \(file.lastPathComponent) ---")
-            
-            print("PROCESS: Attempting to start security-scoped access...")
-            let didStartAccessing = file.startAccessingSecurityScopedResource()
-            print("PROCESS: startAccessingSecurityScopedResource() returned: \(didStartAccessing)")
-            
-            defer {
-                if didStartAccessing {
-                    file.stopAccessingSecurityScopedResource()
-                    print("PROCESS: --- In defer block, stopped security access for \(file.lastPathComponent) ---")
+        DispatchQueue.global(qos: .userInitiated).async {
+            for file in files {
+                let didStartAccessing = file.startAccessingSecurityScopedResource()
+                defer {
+                    if didStartAccessing {
+                        file.stopAccessingSecurityScopedResource()
+                    }
+                }
+                
+                do {
+                    let format: ImageFormat = (settings.outputFormat == 0) ? .jpeg(quality: 0.85) : .png
+                    let outputData = try ImageConverter.convert(
+                        file: file,
+                        maxDimension: settings.outputSize,
+                        format: format
+                    )
+                    
+                    let originalFilename = file.deletingPathExtension().lastPathComponent
+                    let newFilename = "\(originalFilename)-converted.\(format.fileExtension)"
+                    let outputURL = outputDirectory.appendingPathComponent(newFilename)
+                    try outputData.write(to: outputURL)
+                    
+                } catch {
+                    DispatchQueue.main.async {
+                        showError(message: error.localizedDescription)
+                        self.isProcessing = false
+                    }
+                    return
                 }
             }
             
-            do {
-                let format: ImageFormat = (settings.outputFormat == 0) ? .jpeg(quality: 0.85) : .png
-                print("PROCESS: Calling ImageConverter with format: \(format) and size: \(settings.outputSize)")
-                
-                let outputData = try ImageConverter.convert(
-                    file: file,
-                    maxDimension: settings.outputSize,
-                    format: format
-                )
-                print("PROCESS: Successfully converted data, size: \(outputData.count) bytes.")
-                
-                let originalFilename = file.deletingPathExtension().lastPathComponent
-                let newFilename = "\(originalFilename)-converted.\(format.fileExtension)"
-                let outputURL = outputDirectory.appendingPathComponent(newFilename)
-                
-                print("PROCESS: Attempting to write data to: \(outputURL.path)")
-                try outputData.write(to: outputURL)
-                print("PROCESS: Successfully wrote file.")
-                
-            } catch {
-                print("PROCESS: 🔴 ERROR CAUGHT IN PROCESS FUNCTION: \(error)")
-                print("PROCESS: 🔴 Error's Localized Description: \(error.localizedDescription)")
-                showError(message: error.localizedDescription)
+            DispatchQueue.main.async {
                 self.isProcessing = false
-                return
             }
         }
-        
-        print("\nPROCESS: Finished loop successfully.")
-        self.isProcessing = false
     }
 }

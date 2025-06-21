@@ -1,27 +1,25 @@
-//
-//  ImageConverterApp.swift
-//  ImageConverter
-//
-//  Created by Dhruva Kumar on 6/20/25.
-//
-
 import SwiftUI
 
-// ImageConverterApp.swift
-
-import SwiftUI
 
 @main
 struct ImageConverterApp: App {
     @StateObject private var settingsStore = SettingsStore()
+    @StateObject private var appController = AppController()
     
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
-        MenuBarExtra(
-            "Image Converter",
-            systemImage: "photo.on.rectangle"
-        ) {
+        MenuBarExtra {
             AppMenu()
                 .environmentObject(settingsStore)
+                .environmentObject(appController)
+        } label: {
+            let icon = NSImage(systemSymbolName: "photo.on.rectangle.angled", accessibilityDescription: "Image Converter")!
+            let imageView = NSImageView(image: icon)
+            
+            appDelegate.configure(statusItem: imageView.superview?.superview as? NSStatusItem, with: appController)
+            
+            return imageView
         }
         
         Settings {

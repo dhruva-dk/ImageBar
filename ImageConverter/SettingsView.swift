@@ -1,16 +1,6 @@
-//
-//  SettingsView.swift
-//  ImageConverter
-//
-//  Created by Dhruva Kumar on 6/20/25.
-//
-
-// SettingsView.swift
-
 import SwiftUI
 
 struct SettingsView: View {
-    // Connect to the shared store
     @EnvironmentObject var settings: SettingsStore
 
     var body: some View {
@@ -35,11 +25,6 @@ struct SettingsView: View {
             .pickerStyle(.menu)
         }
         .padding()
-        .frame(width: 400)
+        .frame(width: 400, height: 150)
     }
-}
-
-#Preview {
-    SettingsView()
-        .environmentObject(SettingsStore())
 }
