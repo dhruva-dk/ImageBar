@@ -2,6 +2,9 @@ import SwiftUI
 
 struct AppMenu: View {
 
+    
+    @Environment(\.openSettings) private var openSettings
+    
     @State private var importing = false
 
     var body: some View {
@@ -35,7 +38,7 @@ struct AppMenu: View {
         // MARK: Settings & Quit Buttons
         
         Button("Settings") {
-            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+            openSettings()
         }
         
         Divider()
