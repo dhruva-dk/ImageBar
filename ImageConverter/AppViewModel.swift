@@ -18,6 +18,12 @@ class AppViewModel: ObservableObject {
             UserDefaults.standard.set(outputSize, forKey: "outputSize")
         }
     }
+    
+    @Published var jpegQuality: Double {
+        didSet {
+            UserDefaults.standard.set(jpegQuality, forKey: "jpegQuality")
+        }
+    }
 
     // MARK: - State Properties
     
@@ -31,6 +37,8 @@ class AppViewModel: ObservableObject {
         self.outputFormat = UserDefaults.standard.integer(forKey: "outputFormat")
         let savedSize = UserDefaults.standard.integer(forKey: "outputSize")
         self.outputSize = savedSize == 0 ? 1200 : savedSize
+        let savedQuality = UserDefaults.standard.double(forKey: "jpegQuality")
+        self.jpegQuality = (savedQuality == 0) ? 0.85 : savedQuality // Default to 85% quality
     }
     
     // MARK: - Business Logic
@@ -68,7 +76,7 @@ class AppViewModel: ObservableObject {
                         }
                     }
                     
-                    let format: ImageFormat = (self.outputFormat == 0) ? .jpeg(quality: 0.85) : .png
+                    let format: ImageFormat = (self.outputFormat == 0) ? .jpeg(quality: self.jpegQuality) : .png
                     let outputData = try ImageConverter.convert(
                         file: file,
                         maxDimension: self.outputSize,

@@ -20,7 +20,12 @@ struct StatusFooterView: View {
                 case .idle:
                     // We add a subtle icon for better visual balance.
                     Image(systemName: "arrow.right.doc.on.clipboard")
-                    Text("Drag images to the menu bar icon to convert.")
+                    VStack(alignment: .leading) {
+                        Text("Drag images to the menu bar icon to convert.")
+                        Text("Supports: JPEG, PNG, HEIC, TIFF, WEBP")
+                    }
+                        
+                    
                     
                 case .processing:
                     ProgressView().scaleEffect(0.5)
