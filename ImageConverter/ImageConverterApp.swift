@@ -10,14 +10,18 @@ import SwiftUI
 @main
 struct ImageConverterApp: App {
     
+    
+    
     var body: some Scene {
         MenuBarExtra(
             "Image Converter",
             systemImage: "photo.on.rectangle"
         ) {
+            
             ImageConverterView()
+                
+            
 
         }
-        .menuBarExtraStyle(.window)
     }
 }
