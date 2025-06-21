@@ -4,14 +4,17 @@ import MenuBarExtraAccess
 
 @main
 struct ImageConverterApp: App {
-    @StateObject private var settingsViewModel = SettingsViewModel()
+    @StateObject private var appViewModel = AppViewModel()
     @State var isMenuPresented: Bool = false
     
 
     var body: some Scene {
         MenuBarExtra("Image Converter", systemImage: "photo.on.rectangle") {
             AppMenu()
-                .environmentObject(settingsViewModel)
+                .environmentObject(appViewModel)
+                .introspectMenuBarExtraWindow { window in // <-- the magic ✨
+
+                }
 
         }
 
@@ -37,10 +40,7 @@ struct ImageConverterApp: App {
                         }
         }
         
-        Settings {
-            SettingsView()
-                .environmentObject(settingsViewModel)
-        }
+
     }
 }
 
