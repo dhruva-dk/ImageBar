@@ -35,7 +35,7 @@ class AppViewModel: ObservableObject {
     
     func process(files: [URL]) {
         // 1. Guard against starting a new process if one is already running.
-        guard status == .idle else { return }
+        guard status != .processing else { return }
       
         // 2. Set the status to 'processing'.
         DispatchQueue.main.async {

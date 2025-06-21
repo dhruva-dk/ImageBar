@@ -32,7 +32,7 @@ class DraggableView: NSView {
         return .copy
     }
     
-    // MARK: - Custom Dragging Operation (convert files with viewModel)
+    // MARK: - Custom Dragging Operation (convert files with viewModel) https://developer.apple.com/documentation/appkit/nsdraggingdestination
     
     override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
         let pasteboard = sender.draggingPasteboard
