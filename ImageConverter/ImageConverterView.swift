@@ -1,8 +1,10 @@
 import SwiftUI
 
 struct ImageConverterView: View {
-    @State private var sliderValue: Int = 50
+    @State private var sliderValue: Int = 800
     @State private var outputFormat = 0
+    
+    @State private var importing = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -38,7 +40,7 @@ struct ImageConverterView: View {
 
             // Section for File Selection
             Button(action: {
-                // File selection functionality will be added here
+                importing.toggle()
             }) {
                 HStack {
                     Image(systemName: "photo.on.rectangle")
@@ -48,6 +50,27 @@ struct ImageConverterView: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.large)
+            .fileImporter(
+                isPresented: Binding(
+                    get: { importing },
+                    set: { newValue in
+                        importing = newValue
+                    }
+                ),
+                allowedContentTypes: [.image],
+                allowsMultipleSelection: true
+            ) { result in
+                switch result {
+                case .success(let files):
+                    for file in files {
+                        print(file.absoluteString)
+                    }
+                    importing = false
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    importing = false
+                }
+            }
 
 
         }
