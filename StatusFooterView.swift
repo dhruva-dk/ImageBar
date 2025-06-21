@@ -23,8 +23,9 @@ struct StatusFooterView: View {
                     Text("Drag images to the menu bar icon to convert.")
                     
                 case .processing:
-                    ProgressView().scaleEffect(0.7)
+                    ProgressView().scaleEffect(0.5)
                     Text("Processing...")
+                    
                     
                 case .failure(let message):
                     Image(systemName: "exclamationmark.triangle.fill")
