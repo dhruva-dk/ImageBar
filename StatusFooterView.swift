@@ -37,13 +37,51 @@ struct StatusFooterView: View {
                     
                     Spacer() // Push content to the left
                     
-                    // A cleaner dismiss button for the failure state
-                    Image(systemName: "xmark")
-                        .padding(4)
-                        .background(Color.secondary.opacity(0.2), in: Circle())
-                        .contentShape(Circle())
-                        .onTapGesture(perform: onDismiss)
+                    Button(action: onDismiss) { // The action is defined directly
+                        Image(systemName: "xmark")
+                            .padding(4)
+                            // Note: The background is applied to the Image inside the button's label
+                            .background(Color.secondary.opacity(0.2), in: Circle())
+                    }
+                    .buttonStyle(.plain) // Use .plain to remove most of the default button chrome
+                    .contentShape(Circle()) // Define the hit area
+                    
+                    
+                
+                    // In StatusFooterView.swift -> switch status { ... }
+
+                    case .success(let message, let outputURL):
+                        HStack(spacing: 8) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                            
+                            
+                            // Pushes the buttons to the right
+                            
+                            Button(action: {
+                                NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: outputURL.path)
+                            }) {
+                                Text(message + " Click to show.")
+                                    .underline()
+                            }
+                            .buttonStyle(.plain)
+
+
+                            
+                            Spacer()
+      
+                            Button(action: onDismiss) { // The action is defined directly
+                                Image(systemName: "xmark")
+                                    .padding(4)
+                                    // Note: The background is applied to the Image inside the button's label
+                                    .background(Color.secondary.opacity(0.2), in: Circle())
+                            }
+                            .buttonStyle(.plain) // Use .plain to remove most of the default button chrome
+                            .contentShape(Circle()) // Define the hit area
+                        }
                 }
+                
+                
                 
 
             }

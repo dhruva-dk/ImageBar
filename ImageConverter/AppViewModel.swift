@@ -1,5 +1,6 @@
 import SwiftUI
-import UniformTypeIdentifiers // Needed for UTType constants
+import UniformTypeIdentifiers
+import Combine
 
 
 class AppViewModel: ObservableObject {
@@ -20,8 +21,9 @@ class AppViewModel: ObservableObject {
 
     // MARK: - State Properties
     
-    // This single property now replaces both 'isProcessing' and 'errorMessage'.
     @Published var status: Status = .idle
+    
+    private var statusTimer: AnyCancellable?
 
     // MARK: - Initialization
     
@@ -79,9 +81,13 @@ class AppViewModel: ObservableObject {
                     try outputData.write(to: outputURL)
                 }
                 
-                // 4. Finished successfully, return to the idle state for now.
+                let successMessage = "\(files.count) image(s) converted."
+                
                 DispatchQueue.main.async {
-                    self.status = .idle
+                    // Set the new success status, passing in the message and directory URL
+                    // NOTE: Make sure your Status enum has the .success case defined.
+                    self.status = .success(message: successMessage, outputURL: outputDirectory)
+                    
                 }
                 
             } catch {
