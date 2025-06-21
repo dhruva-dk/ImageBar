@@ -12,12 +12,13 @@ struct ImageConverterApp: App {
         MenuBarExtra("Image Converter", systemImage: "photo.on.rectangle") {
             AppMenu()
                 .environmentObject(appViewModel)
+                
                 .introspectMenuBarExtraWindow { window in // <-- the magic ✨
                     
                 }
 
         }
-
+        .menuBarExtraStyle(.window)
         .menuBarExtraAccess(isPresented: $isMenuPresented) { statusItem in // <-- the magic ✨
              // access status item or store it in a @State var
             // MARK: - This is where the magic happens
