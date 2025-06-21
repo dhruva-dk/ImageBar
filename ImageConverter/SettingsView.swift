@@ -12,13 +12,13 @@ struct SettingsView: View {
     @State private var outputFormat = 0
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // Section for Output Size
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Maximum Output Dimension")
-                    .font(.headline)
-                HStack {
-                    TextField("50", value: $sliderValue, format: .number)
+        Form {
+            LabeledContent("Max Dimensions:") {
+                VStack(alignment: .leading, spacing: 4) {
+                    TextField("", value: $sliderValue, format: .number)
+                        .textFieldStyle(.roundedBorder)
+                        .frame(width: 70)
+
                     Slider(value: Binding(
                         get: { Double(sliderValue) },
                         set: { sliderValue = Int($0) }
@@ -26,21 +26,14 @@ struct SettingsView: View {
                 }
             }
 
-            Divider()
-
-            // Section for Output Format
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Output Format")
-                    .font(.headline)
-                Picker("", selection: $outputFormat) {
-                    Text("JPG").tag(0)
-                    Text("PNG").tag(1)
-                }
+            Picker("Output Format:", selection: $outputFormat) {
+                Text("JPEG").tag(0)
+                Text("PNG").tag(1)
             }
-
-            Divider()
+            .pickerStyle(.menu)
         }
         .padding()
+        .frame(width: 400)
     }
 }
 
