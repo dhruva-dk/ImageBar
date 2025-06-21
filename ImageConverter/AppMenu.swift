@@ -3,7 +3,7 @@ import SwiftUI
 struct AppMenu: View {
     @Environment(\.openSettings) private var openSettings
     @EnvironmentObject var settings: SettingsStore
-    @EnvironmentObject var appController: AppController
+
     
     @State private var isImporting = false
     @State private var isProcessing = false
@@ -41,9 +41,6 @@ struct AppMenu: View {
             } else if case .failure(let error) = result {
                 showError(message: error.localizedDescription)
             }
-        }
-        .onReceive(appController.droppedFilesSubject) { urls in
-            process(files: urls)
         }
         .alert("An Error Occurred", isPresented: $isShowingErrorAlert) {
             Button("OK") { }
