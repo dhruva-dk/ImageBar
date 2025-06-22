@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		428F22FA2E071B9100D04EAE /* MenuBarExtraAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 428F22F92E071B9100D04EAE /* MenuBarExtraAccess */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		427C7A0C2E05B96800E90094 /* ImageConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				428F22FA2E071B9100D04EAE /* MenuBarExtraAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = ImageConverter;
 			packageProductDependencies = (
+				428F22F92E071B9100D04EAE /* MenuBarExtraAccess */,
 			);
 			productName = ImageConverter;
 			productReference = 427C7A0C2E05B96800E90094 /* ImageConverter.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 427C7A032E05B96800E90094;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				428F22F82E071B9100D04EAE /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 427C7A0D2E05B96800E90094 /* Products */;
 			projectDirPath = "";
@@ -323,6 +332,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		428F22F82E071B9100D04EAE /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orchetect/MenuBarExtraAccess";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		428F22F92E071B9100D04EAE /* MenuBarExtraAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 428F22F82E071B9100D04EAE /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */;
+			productName = MenuBarExtraAccess;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 427C7A042E05B96800E90094 /* Project object */;
 }
