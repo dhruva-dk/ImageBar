@@ -89,7 +89,7 @@ class AppViewModel: ObservableObject {
                     default:
                         format = .png
                     }
-                    let outputData = try ImageBar.convert(
+                    let outputData = try ImageConverter.convert(
                         file: file,
                         maxDimension: self.outputSize,
                         format: format

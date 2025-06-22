@@ -1,5 +1,5 @@
 //
-//  ImageBar.swift
+//  ImageConverter.swift
 //  ImageBar
 //
 //  Created by Dhruva Kumar on 6/21/25.
@@ -8,7 +8,7 @@
 import Foundation
 import ImageIO
 
-struct ImageBar {
+struct ImageConverter {
     static func convert(
         file: URL,
         maxDimension: Int,
