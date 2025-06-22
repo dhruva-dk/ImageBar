@@ -11,24 +11,7 @@ struct ImageConverterApp: App {
     var body: some Scene {
         MenuBarExtra("Image Converter", systemImage: "photo.on.rectangle") {
             AppMenu()
-                .overlay(alignment: .topTrailing) {
-                    Button(action: {
-                        NSApp.terminate(nil)
-                    }) {
-                        Image(systemName: "xmark")
-                            .padding(4)
-                            .background(Color.secondary.opacity(0.2), in: Circle())
-                    }
-                    .buttonStyle(.plain) // Removes default button chrome
-                    .contentShape(Circle()) // Makes the hit area circular
-                    .padding(8)
-
-                }
                 .environmentObject(appViewModel)
-                
-                .introspectMenuBarExtraWindow { window in // <-- the magic ✨
-                    
-                }
 
         }
         .menuBarExtraStyle(.window)
