@@ -15,9 +15,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		427C7A0E2E05B96800E90094 /* ImageConverter */ = {
+		427C7A0E2E05B96800E90094 /* ImageBar */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ImageConverter;
+			path = ImageBar;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -37,7 +37,7 @@
 		427C7A032E05B96800E90094 = {
 			isa = PBXGroup;
 			children = (
-				427C7A0E2E05B96800E90094 /* ImageConverter */,
+				427C7A0E2E05B96800E90094 /* ImageBar */,
 				427C7A0D2E05B96800E90094 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,7 +66,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				427C7A0E2E05B96800E90094 /* ImageConverter */,
+				427C7A0E2E05B96800E90094 /* ImageBar */,
 			);
 			name = ImageBar;
 			packageProductDependencies = (

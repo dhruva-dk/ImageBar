@@ -1,6 +1,6 @@
 //
-//  ImageConverterApp.swift
-//  ImageConverter
+//  ImageBarApp.swift
+//  ImageBar
 //
 //  Created by Dhruva Kumar on 6/21/25.
 //
@@ -9,7 +9,7 @@ import SwiftUI
 import MenuBarExtraAccess
 
 @main
-struct ImageConverterApp: App {
+struct ImageBarApp: App {
     @StateObject private var appViewModel = AppViewModel()
     @State var isMenuPresented: Bool = false
 

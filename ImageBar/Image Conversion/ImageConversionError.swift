@@ -1,6 +1,6 @@
 //
-//  ImageConverter.swift
-//  ImageConverter
+//  ImageConversionError.swift
+//  ImageBar
 //
 //  Created by Dhruva Kumar on 6/21/25.
 //

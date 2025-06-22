@@ -1,6 +1,6 @@
 //
 //  ImageFormat.swift
-//  ImageConverter
+//  ImageBar
 //
 //  Created by Dhruva Kumar on 6/21/25.
 //

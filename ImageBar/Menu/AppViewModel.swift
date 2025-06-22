@@ -1,6 +1,6 @@
 //
 //  AppViewModel.swift
-//  ImageConverter
+//  ImageBar
 //
 //  Created by Dhruva Kumar on 6/21/25.
 //
@@ -89,7 +89,7 @@ class AppViewModel: ObservableObject {
                     default:
                         format = .png
                     }
-                    let outputData = try ImageConverter.convert(
+                    let outputData = try ImageBar.convert(
                         file: file,
                         maxDimension: self.outputSize,
                         format: format
