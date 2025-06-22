@@ -28,6 +28,12 @@ class AppViewModel: ObservableObject {
         }
     }
     
+    @Published var convertedFileSuffix: String {
+        didSet {
+            UserDefaults.standard.set(convertedFileSuffix, forKey: "convertedFileSuffix")
+        }
+    }
+    
     @Published var status: Status = .idle
     private var statusTimer: AnyCancellable?
     
@@ -37,6 +43,7 @@ class AppViewModel: ObservableObject {
         self.outputSize = savedSize == 0 ? 1200 : savedSize
         let savedQuality = UserDefaults.standard.double(forKey: "quality")
         self.quality = (savedQuality == 0) ? 0.85 : savedQuality
+        self.convertedFileSuffix = UserDefaults.standard.string(forKey: "convertedFileSuffix") ?? "-converted"
     }
     
     func process(files: [URL]) {
@@ -89,7 +96,10 @@ class AppViewModel: ObservableObject {
                     )
                     
                     let originalFilename = file.deletingPathExtension().lastPathComponent
-                    let newFilename = "\(originalFilename)-converted.\(format.fileExtension)"
+                    let convertedFileSuffix = self.convertedFileSuffix
+                    
+                    
+                    let newFilename = "\(originalFilename)\(convertedFileSuffix).\(format.fileExtension)"
                     let outputURL = outputDirectory.appendingPathComponent(newFilename)
                     try outputData.write(to: outputURL)
                 }

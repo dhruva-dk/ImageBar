@@ -23,6 +23,7 @@ struct AppMenu: View {
             
             VStack(alignment: .leading, spacing: 8) {
                 Text("Quality (JPEG & HEIC Only):")
+                
                 HStack {
                     TextField("", value: Binding(
                         get: { Int(appViewModel.quality * 100) },
@@ -35,6 +36,7 @@ struct AppMenu: View {
                 }
             }
             .disabled((appViewModel.outputFormat != 0 && appViewModel.outputFormat != 2) || appViewModel.status == .processing)
+            
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("Maximum Output Dimension:")
@@ -49,6 +51,14 @@ struct AppMenu: View {
                 }
             }
             .disabled(appViewModel.status == .processing)
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Filename Suffix (Blank Overwrites Original):")
+                TextField("", text: $appViewModel.convertedFileSuffix)
+                    .textFieldStyle(.roundedBorder)
+
+
+            }
 
             StatusFooterView(status: appViewModel.status) {
                 appViewModel.status = .idle
@@ -63,7 +73,7 @@ struct AppMenu: View {
             }
         }
         .font(.system(size: 13))
-        .padding(12)
+        .padding(16)
         .frame(width: 330)
         .animation(.easeInOut(duration: 0.15), value: appViewModel.outputFormat)
     }
