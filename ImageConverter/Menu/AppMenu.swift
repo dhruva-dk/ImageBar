@@ -10,9 +10,6 @@ struct AppMenu: View {
         VStack(alignment: .leading, spacing: 16) {
             
 
-
-                
-                
                 Picker("Output Format:", selection: $appViewModel.outputFormat) {
                     Text("JPEG").tag(0)
                     Text("PNG").tag(1)
@@ -21,7 +18,6 @@ struct AppMenu: View {
                 }
                 .pickerStyle(.menu)
                 .disabled(appViewModel.status == .processing) // Disable during processing
-                
 
                 
                 
@@ -69,6 +65,15 @@ struct AppMenu: View {
             // --- Status Footer ---
             StatusFooterView(status: appViewModel.status) {
                 appViewModel.status = .idle
+            }
+            
+            // --- Quit Button at the bottom right ---
+            HStack {
+                Spacer()
+                Button("Quit") {
+                    NSApplication.shared.terminate(nil)
+                }
+                .keyboardShortcut("q", modifiers: [.command]) // Optional: Cmd+Q
             }
         }
         .font(.system(size: 13))
