@@ -11,7 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		427C7A0C2E05B96800E90094 /* ImageConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		427C7A0C2E05B96800E90094 /* ImageBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -45,7 +45,7 @@
 		427C7A0D2E05B96800E90094 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				427C7A0C2E05B96800E90094 /* ImageConverter.app */,
+				427C7A0C2E05B96800E90094 /* ImageBar.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,9 +53,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		427C7A0B2E05B96800E90094 /* ImageConverter */ = {
+		427C7A0B2E05B96800E90094 /* ImageBar */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 427C7A182E05B96900E90094 /* Build configuration list for PBXNativeTarget "ImageConverter" */;
+			buildConfigurationList = 427C7A182E05B96900E90094 /* Build configuration list for PBXNativeTarget "ImageBar" */;
 			buildPhases = (
 				427C7A082E05B96800E90094 /* Sources */,
 				427C7A092E05B96800E90094 /* Frameworks */,
@@ -68,12 +68,12 @@
 			fileSystemSynchronizedGroups = (
 				427C7A0E2E05B96800E90094 /* ImageConverter */,
 			);
-			name = ImageConverter;
+			name = ImageBar;
 			packageProductDependencies = (
 				428F22F92E071B9100D04EAE /* MenuBarExtraAccess */,
 			);
 			productName = ImageConverter;
-			productReference = 427C7A0C2E05B96800E90094 /* ImageConverter.app */;
+			productReference = 427C7A0C2E05B96800E90094 /* ImageBar.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -91,7 +91,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 427C7A072E05B96800E90094 /* Build configuration list for PBXProject "ImageConverter" */;
+			buildConfigurationList = 427C7A072E05B96800E90094 /* Build configuration list for PBXProject "ImageBar" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -108,7 +108,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				427C7A0B2E05B96800E90094 /* ImageConverter */,
+				427C7A0B2E05B96800E90094 /* ImageBar */,
 			);
 		};
 /* End PBXProject section */
@@ -267,6 +267,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -295,6 +296,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -313,7 +315,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		427C7A072E05B96800E90094 /* Build configuration list for PBXProject "ImageConverter" */ = {
+		427C7A072E05B96800E90094 /* Build configuration list for PBXProject "ImageBar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				427C7A162E05B96900E90094 /* Debug */,
@@ -322,7 +324,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		427C7A182E05B96900E90094 /* Build configuration list for PBXNativeTarget "ImageConverter" */ = {
+		427C7A182E05B96900E90094 /* Build configuration list for PBXNativeTarget "ImageBar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				427C7A192E05B96900E90094 /* Debug */,
