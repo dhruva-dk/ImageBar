@@ -18,10 +18,8 @@ class DraggableView: NSView {
         setup()
     }
     
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-        
     }
     
     private func setup() {
@@ -32,8 +30,7 @@ class DraggableView: NSView {
         return .copy
     }
     
-    // MARK: - Custom Dragging Operation (convert files with viewModel) https://developer.apple.com/documentation/appkit/nsdraggingdestination
-    
+    // https://developer.apple.com/documentation/appkit/nsdraggingdestination
     override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
         let pasteboard = sender.draggingPasteboard
         if let urls = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL] {
@@ -41,7 +38,5 @@ class DraggableView: NSView {
             return true
         }
         return false
-        
-   
     }
 }

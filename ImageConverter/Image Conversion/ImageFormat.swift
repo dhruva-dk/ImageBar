@@ -1,4 +1,9 @@
-// In ImageFormat.swift
+//
+//  ImageFormat.swift
+//  ImageConverter
+//
+//  Created by Dhruva Kumar on 6/21/25.
+//
 
 import Foundation
 import ImageIO
@@ -7,7 +12,6 @@ import UniformTypeIdentifiers
 enum ImageFormat {
     case jpeg(quality: Double)
     case png
-    // --- ADD NEW FORMATS ---
     case heic(quality: Double)
     case tiff
     
@@ -15,7 +19,6 @@ enum ImageFormat {
         switch self {
         case .jpeg: return UTType.jpeg.identifier as CFString
         case .png:  return UTType.png.identifier as CFString
-        // --- ADD NEW UTI's ---
         case .heic: return UTType.heic.identifier as CFString
         case .tiff: return UTType.tiff.identifier as CFString
         }
@@ -23,10 +26,10 @@ enum ImageFormat {
     
     var properties: [CFString: Any] {
         switch self {
-        case .jpeg(let quality), .heic(let quality): // HEIC uses the same quality key
+        case .jpeg(let quality), .heic(let quality):
             return [kCGImageDestinationLossyCompressionQuality: quality]
         case .png, .tiff:
-            return [:] // Use default settings for PNG and TIFF
+            return [:]
         }
     }
     
@@ -34,7 +37,6 @@ enum ImageFormat {
         switch self {
         case .jpeg: "jpg"
         case .png: "png"
-        // --- ADD NEW EXTENSIONS ---
         case .heic: "heic"
         case .tiff: "tiff"
         }

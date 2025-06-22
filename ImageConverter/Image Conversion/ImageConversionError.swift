@@ -1,3 +1,10 @@
+//
+//  ImageConverter.swift
+//  ImageConverter
+//
+//  Created by Dhruva Kumar on 6/21/25.
+//
+
 import Foundation
 
 enum ImageConversionError: Error, LocalizedError {
