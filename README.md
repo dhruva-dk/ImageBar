@@ -7,6 +7,7 @@
 
 A Menubar image conversion and resizing tool for MacOS with drag-and-drop support, built with SwiftUI's `MenuBarExtra API`. Supports JPEG, HEIC, TIFF and PNG through ImageIO.
 
+[View ImageBar on the Mac App Store](https://apps.apple.com/us/app/imagebar/id6747653607)
 
 ## Why I Built ImageBar
 
@@ -21,6 +22,12 @@ Ever since my first project, I struggled with resizing images and icons for vari
 - Open the application to select desired output format, output size, and the output file suffix. (A blank suffix will allow you to overwrite the original file)
 - Drag your images into the application icon in the menu bar
 - Select a destination for the converted images through the file picker interface
+
+## Running Locally
+
+To run ImageBar locally, open the `ImageBar.xcodeproj` in Xcode and press `Cmd + R`.
+
+Requires macOS 13+.
 
 ## Special Thanks
 - The [MenuBarExtraAccess](https://github.com/orchetect/MenuBarExtraAccess) library, which allowed me to access the `NSStatusItem` AppKit API, which I needed to enable the file drag-and-drop functionality.
