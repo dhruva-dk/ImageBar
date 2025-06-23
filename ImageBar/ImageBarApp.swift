@@ -14,7 +14,7 @@ struct ImageBarApp: App {
     @State var isMenuPresented: Bool = false
 
     var body: some Scene {
-        MenuBarExtra("Image Converter", systemImage: "photo.on.rectangle") {
+        MenuBarExtra("Image Converter", systemImage: "photo.on.rectangle.angled") {
             AppMenu()
                 .environmentObject(appViewModel)
         }
