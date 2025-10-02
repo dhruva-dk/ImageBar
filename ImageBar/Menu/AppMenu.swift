@@ -56,8 +56,6 @@ struct AppMenu: View {
                 Text("Filename Suffix (Blank Overwrites Original):")
                 TextField("", text: $appViewModel.convertedFileSuffix)
                     .textFieldStyle(.roundedBorder)
-
-
             }
 
             StatusFooterView(status: appViewModel.status) {
