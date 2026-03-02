@@ -29,6 +29,15 @@ To run ImageBar locally, open the `ImageBar.xcodeproj` in Xcode and press `Cmd +
 
 Requires macOS 13+.
 
+## Architecture Overview
+
+This application loosely follows the model, view, view-model (MVVM) archiecture.
+
+- `AppMenu.swift` defines the GUI that appears when the user clicks the application's menu bar icon to adjust conversion and resize settings. It subscribes to `AppViewModel.swift` via the `EnvironmentObject` API
+- `AppViewModel.swift` serves as an intermediary layer between the ImageIO conversion logic in `ImageConverter.swift` and the GUI in `AppMenu.swift`. It manages the conversion setting state via the `@Published` property wrapper and passes these settings to the converter
+- `ImageConverter.swift` utilizes the ImageIO API to convert the image data and returns the converted data to `AppViewModel` to write out to the file system
+
+
 ## Special Thanks
 - The [MenuBarExtraAccess](https://github.com/orchetect/MenuBarExtraAccess) library, which allowed me to access the `NSStatusItem` AppKit API, which I needed to enable the file drag-and-drop functionality.
 - [This GitHub Issue](https://github.com/localsend/localsend/issues/1615) which gave me the code inspiration to implement drag-and-drop
