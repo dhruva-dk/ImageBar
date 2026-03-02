@@ -15,7 +15,7 @@ Ever since my first project, I struggled with resizing images and icons for vari
 
 ## Tech Stack
 - `SwiftUI` for the user interface
-- `UIKit` for the file destination picker
+- `AppKit` for the file destination picker
 - `ImageIO` for the image conversion utility
 
 ## Usage
